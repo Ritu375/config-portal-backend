@@ -1,6 +1,8 @@
 package com.config.backend.controller;
 
 import com.config.backend.model.Configuration;
+import com.config.backend.model.Remark;
+import com.config.backend.model.Response;
 import com.config.backend.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,26 +29,35 @@ public class ConfigurationController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRemark(@PathVariable String id,
-                                          @RequestBody RemarkRequest body) {
+                                          @RequestBody Remark body) {
         boolean updated = service.updateRemark(id, body.getRemark());
         if (updated) {
-            return ResponseEntity.ok(new ResponseMessage("success"));
+            return ResponseEntity.ok(new Response("success"));
         }
         return ResponseEntity.status(404)
-                .body(new ResponseMessage("Configuration not found"));
+                .body(new Response("Configuration not found"));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createConfiguration(@RequestBody Configuration config) {
+        Configuration saved = service.createConfiguration(config);
+        return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteConfiguration(@PathVariable String id) {
+        boolean deleted = service.deleteConfiguration(id);
+        if (deleted) {
+            return ResponseEntity.ok(new Response("deleted"));
+        }
+        return ResponseEntity.status(404)
+                .body(new Response("Configuration not found"));
+    }
+    @GetMapping
+    public ResponseEntity<?> getAllConfigurations() {
+        return ResponseEntity.ok(service.getAllConfigurations());
     }
 
 
-    public static class RemarkRequest {
-        private String remark;
-        public String getRemark() { return remark; }
-        public void setRemark(String remark) { this.remark = remark; }
-    }
 
-    public static class ResponseMessage {
-        private String message;
-        public ResponseMessage(String message) { this.message = message; }
-        public String getMessage() { return message; }
-        public void setMessage(String message) { this.message = message; }
-    }
 }

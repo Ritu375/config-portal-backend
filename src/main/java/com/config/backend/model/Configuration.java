@@ -11,11 +11,9 @@ public class Configuration {
     @Id
     private String id;
 
-    private List<List<String>> data;   // 2‑D array
+    private List<List<String>> data;
 
     private String remark;
-
-    /* ---------- constructors ---------- */
 
     public Configuration() { }
 
@@ -26,8 +24,6 @@ public class Configuration {
         this.data = data;
         this.remark = remark;
     }
-
-    /* ---------- getters & setters ---------- */
 
     public String getId() {
         return id;
